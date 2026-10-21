@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#08172a">
+  <meta name="description" content="Roda Imbuhan — permainan Bahasa Melayu Tahun 5, 20 cabaran imbuhan awalan, akhiran dan apitan.">
+  <title>Roda Imbuhan | Bahasa Melayu Tahun 5</title>
+  <style>
+    :root { color-scheme: dark; --bg:#08172a; --panel:#10243c; --panel2:#162e49; --line:rgba(171,207,235,.21); --ink:#f5f9ff; --muted:#a9bfd3; --teal:#61e4d2; --gold:#f6cd80; --red:#ff8b94; }
+    *{box-sizing:border-box}
+    html,body{width:100%;height:100%;margin:0;overflow:hidden}
+    body{font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:radial-gradient(circle at 50% -10%,#1b5270 0%,#0c243b 34%,#08172a 70%);color:var(--ink)}
+    button,input{font:inherit} button{cursor:pointer;touch-action:manipulation} button:disabled{cursor:default}
+    .app{width:min(100%,470px);height:100dvh;min-height:0;margin:0 auto;overflow:hidden;position:relative;isolation:isolate;box-shadow:0 0 100px #0209168c}
+    .app::before{content:"";position:absolute;inset:-120px -40px auto;height:340px;pointer-events:none;background:radial-gradient(ellipse,rgba(26,132,147,.17),transparent 70%);z-index:-1}
+    .screen{height:100%;min-height:0;display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top) + 14px) 17px calc(env(safe-area-inset-bottom) + 13px);gap:clamp(9px,1.5dvh,16px)}
+    .hidden{display:none!important}
+    .brand{display:flex;align-items:center;justify-content:space-between;gap:9px}
+    .brandmark{display:flex;align-items:center;gap:10px;font-size:12px;letter-spacing:1.6px;font-weight:800}
+    .brandlogo{height:32px;width:32px;display:grid;place-items:center;border:1px solid rgba(97,228,210,.6);background:#153848;color:var(--teal);border-radius:10px;font-size:18px;box-shadow:0 0 20px #16c9be18}
+    .chip{border:1px solid var(--line);background:#132b43;border-radius:40px;padding:7px 10px;color:var(--gold);font-size:10px;font-weight:800;letter-spacing:.6px;white-space:nowrap}
+    .landing,.finishmain{flex:1;min-height:0;display:flex;flex-direction:column;justify-content:center;gap:clamp(10px,2.1dvh,22px)}
+    .topline{color:var(--teal);font-size:11px;font-weight:800;letter-spacing:2.2px;text-transform:uppercase}
+    h1,h2,p{margin:0}h1{font-size:clamp(39px,8.7vw,54px);letter-spacing:-1.8px;line-height:1.05;font-weight:850}h1 em{display:block;font-style:normal;color:var(--gold)}
+    .subtitle{font-size:clamp(13px,1.8dvh,16px);color:var(--muted);line-height:1.52}
+    .hero-board{border:1px solid rgba(97,228,210,.30);background:linear-gradient(160deg,#1c4058,#102137);border-radius:22px;padding:clamp(13px,2.5dvh,24px);box-shadow:inset 0 1px #ffffff12,0 13px 50px #0003}
+    .sampleboard{display:flex;justify-content:center;align-items:stretch;gap:5px;margin:9px 0 14px}
+    .sampletile{flex:1;max-width:95px;min-height:58px;border:1px solid #41879d;background:linear-gradient(145deg,#1b6780,#12516c);border-radius:7px;display:grid;place-items:center;box-shadow:inset 0 1px #ffffff34;color:#fff;font-size:19px;font-weight:850}
+    .sampletile:nth-child(2){background:#f7fbfe;color:#13283d;border-color:#fff}
+    .micro{color:var(--muted);font-size:11px;text-align:center;line-height:1.4}
+    .fieldlabel{font-size:11px;font-weight:750;color:#d7e6f4;letter-spacing:.4px}
+    .entry{width:100%;background:#142d47;border:1px solid #3d6278;border-radius:13px;padding:13px 14px;color:white;outline:none;font-size:16px;margin:7px 0 9px}
+    .entry:focus{border-color:var(--teal);box-shadow:0 0 0 3px #61e4d224}
+    .solid{border:0;border-radius:13px;background:linear-gradient(95deg,#66ead2,#9af0df);color:#092333;font-weight:850;min-height:51px;box-shadow:0 8px 24px #30cbb22a}
+    .solid:active,.option:active{transform:scale(.985)}.solid:disabled{opacity:.5}
+    .mutedfoot{text-align:center;color:#829bb2;font-size:10px;line-height:1.4}
+    .quiz-head{display:flex;flex-direction:column;gap:9px}
+    .meta{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .meta .question-count{font-size:11px;color:#f2d6a1;font-weight:800;letter-spacing:.8px}
+    .meta .topic{font-size:11px;color:var(--muted);font-weight:750}
+    .progress{height:5px;background:#24405b;border-radius:99px;overflow:hidden}
+    .progress>div{height:100%;width:0%;border-radius:99px;background:linear-gradient(90deg,#37b9b6,#a4f4d8);transition:width .35s}
+    .stage{border-radius:21px;border:1px solid rgba(148,198,223,.23);background:linear-gradient(153deg,#1b3b55,#0d223a 80%);padding:clamp(13px,2.4dvh,22px) 13px;box-shadow:inset 0 1px #ffffff12,0 22px 48px #0002;display:flex;flex-direction:column;align-items:center;gap:clamp(10px,2dvh,21px);flex:1;min-height:0;justify-content:center}
+    .stage-label{color:#7ddfdc;letter-spacing:2px;font-size:10px;font-weight:850;text-align:center}
+    .base-note{color:#aebfd0;text-align:center;font-size:11px}
+    .baseword{font-size:clamp(25px,4.4dvh,37px);font-weight:850;letter-spacing:-.7px;text-align:center;line-height:1.08;overflow-wrap:anywhere}
+    .board{width:100%;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr) minmax(0,1fr);gap:5px;perspective:900px;min-height:clamp(55px,9dvh,82px)}
+    .boardtile{border:1px solid #408499;border-radius:8px;background:linear-gradient(165deg,#247087,#13516b);display:flex;align-items:center;justify-content:center;color:white;font-weight:800;font-size:clamp(12px,3.5vw,20px);letter-spacing:.4px;min-width:0;padding:4px;line-height:1.25;text-align:center;backface-visibility:hidden;transform-style:preserve-3d}
+    .boardtile.center{background:linear-gradient(170deg,#f4fbff,#c8e0ed);color:#10253b;border-color:#fff;font-size:clamp(14px,4vw,20px);overflow-wrap:anywhere}
+    .boardtile.empty{background:#09243d73;border-style:dashed;color:#6695a6}
+    .boardtile.flipped{animation:flip .62s ease-in-out both;background:linear-gradient(150deg,#6de7d0,#25a9b1);color:#082d36;border-color:#a7ffed}
+    @keyframes flip{0%{transform:rotateX(0)}48%{transform:rotateX(88deg)}52%{transform:rotateX(-88deg)}100%{transform:rotateX(0)}}
+    .fullword{font-size:clamp(13px,2.5dvh,18px);color:var(--teal);font-weight:850;min-height:19px;letter-spacing:.25px;text-align:center}
+    .sentencebox{width:100%;background:#08192ac7;border:1px solid #38546b;border-radius:13px;padding:clamp(10px,1.9dvh,16px) 12px}
+    .sentence-head{font-size:10px;font-weight:800;color:#91afc8;letter-spacing:1.1px;margin-bottom:7px}
+    .sentence{font-size:clamp(14px,2.25dvh,18px);font-weight:600;line-height:1.42;text-align:center}
+    .blank{display:inline-block;min-width:82px;color:#f0d78c;border-bottom:2px solid #f0d78c;vertical-align:baseline;padding:0 2px}
+    .blank.solved{color:var(--teal);border-bottom-color:var(--teal)}
+    .chooser{display:flex;flex-direction:column;gap:8px;flex:none}
+    .choice-head{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:11px;font-weight:850;color:#cce1ef;letter-spacing:.4px}
+    .optiongrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+    .option{min-height:clamp(50px,8dvh,67px);border-radius:12px;border:1px solid #406c80;background:linear-gradient(150deg,#1c405a,#163248);box-shadow:inset 0 1px #ffffff11;color:white;font-weight:850;font-size:clamp(15px,2.4dvh,19px);position:relative;padding:8px 6px;transition:transform .12s,border-color .2s,background .2s}
+    .option:hover:not(:disabled),.option:focus-visible{border-color:var(--teal)}
+    .option.wrong{border-color:#d36c80;background:#4c253c;animation:shake .33s ease}
+    .option.right{border-color:var(--teal);background:#176057;color:#d8fff6;animation:flip .55s ease-in-out}
+    .option:disabled:not(.right):not(.wrong){opacity:.40}
+    @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+    .feedback{min-height:34px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:clamp(11px,1.7dvh,13px);color:var(--muted);line-height:1.25;padding:0 2px}
+    .feedback.good{color:var(--teal)}.feedback.bad{color:#ffb7bd}
+    .game-foot{display:flex;justify-content:space-between;align-items:center;gap:9px}
+    .scores{display:flex;gap:16px}.stat{display:flex;flex-direction:column;gap:3px}.stat small{color:#8da9bf;font-size:9px;letter-spacing:1px;font-weight:850}.stat strong{font-size:19px;color:#f6dba1}
+    .next{padding:0 10px;min-width:146px;min-height:45px;white-space:nowrap;font-size:clamp(12px,3.5vw,15px)}.next:disabled{background:#1e3b53;color:#7b9bb1;box-shadow:none}
+    .trophy{width:73px;height:73px;display:grid;place-items:center;margin:0 auto;border-radius:23px;background:linear-gradient(160deg,#276a77,#174154);font-size:35px;border:1px solid #67d5c7;box-shadow:0 0 45px #4bdac42c}
+    .finishmain{text-align:center;align-items:stretch}.finishmain h2{font-size:clamp(27px,4.5dvh,38px)}
+    .scorebig{font-size:clamp(65px,13dvh,96px);font-weight:900;color:var(--gold);line-height:1;letter-spacing:-4px}
+    .scorebig small{font-size:18px;letter-spacing:0;color:#b2cad8}
+    .summaryrow{display:grid;grid-template-columns:1fr 1fr;gap:8px}.summarybox{border:1px solid var(--line);background:#142c44;border-radius:13px;padding:13px 8px}.summarybox strong{display:block;font-size:19px;color:var(--teal)}.summarybox span{font-size:10px;color:#b6cadb}
+    .sendmessage{font-size:11px;color:#b3cddd;line-height:1.5;min-height:32px;overflow-wrap:anywhere}
+    .secondary{border:1px solid #3c6279;background:#15334c;color:#d8edfa;border-radius:12px;min-height:44px;font-weight:700}
+    .finishbuttons{display:grid;gap:9px}
+    .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+    @media (max-height:700px){.screen{gap:8px;padding-top:calc(env(safe-area-inset-top) + 9px);padding-bottom:calc(env(safe-area-inset-bottom) + 8px)}.stage{gap:8px;padding:11px}.option{min-height:46px}.feedback{min-height:24px}.board{min-height:51px}.sentencebox{padding:8px}.landing{gap:10px}h1{font-size:38px}.hero-board{padding:12px}.sampletile{min-height:47px}}
+    @media (max-height:590px){.stage-label,.base-note{display:none}.stage{gap:5px}.board{min-height:44px}.option{min-height:38px;font-size:14px}.sentence{font-size:13px}.meta{font-size:10px}.progress{height:4px}.feedback{font-size:10px;min-height:19px}.game-foot{min-height:40px}.baseword{font-size:22px}.sentencebox{padding:7px}}
+    @media (prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <section id="intro" class="screen" aria-label="Mula permainan">
+    <header class="brand"><div class="brandmark"><div class="brandlogo">R</div> RODA IMBUHAN</div><span class="chip">BM TAHUN 5</span></header>
+    <main class="landing">
+      <div class="topline">PENTAS CABARAN BAHASA</div>
+      <h1>Roda <em>Imbuhan.</em></h1>
+      <p class="subtitle">Lengkapkan kata dasar dengan imbuhan yang tepat. Lihat blok berpusing dan ayat menjadi lengkap!</p>
+      <div class="hero-board" aria-hidden="true">
+        <div class="stage-label">PAPAN IMBUHAN DIGITAL</div>
+        <div class="sampleboard"><div class="sampletile">ke-</div><div class="sampletile">BERSIH</div><div class="sampletile">-an</div></div>
+        <div class="micro">20 CABARAN &nbsp;•&nbsp; 3 JENIS IMBUHAN &nbsp;•&nbsp; 100 MARKAH</div>
+      </div>
+      <div>
+        <label class="fieldlabel" for="studentName">NAMA MURID</label>
+        <input id="studentName" class="entry" type="text" maxlength="50" autocomplete="name" placeholder="Taip nama penuh" required>
+        <button class="solid" id="startBtn" style="width:100%">MULA PERMAINAN →</button>
+        <p id="nameError" class="feedback bad" aria-live="polite" style="min-height:15px"></p>
+      </div>
+    </main>
+    <p class="mutedfoot">Kelas 5 Battuta • Paparan khas untuk telefon pintar</p>
+  </section>
+  <section id="game" class="screen hidden" aria-label="Permainan imbuhan">
+    <header class="brand"><div class="brandmark"><div class="brandlogo">R</div> RODA IMBUHAN</div><span class="chip" id="roundChip">PUSINGAN 1</span></header>
+    <div class="quiz-head">
+      <div class="meta"><span class="question-count" id="questionCount">SOALAN 01 / 20</span><span class="topic" id="topic">IMBUHAN AWALAN</span></div>
+      <div class="progress" role="progressbar" aria-label="Kemajuan soalan" aria-valuemin="0" aria-valuemax="20" aria-valuenow="0" id="progressBar"><div id="progressFill"></div></div>
+    </div>
+    <main class="stage">
+      <div class="stage-label">BINA PERKATAAN YANG BETUL</div>
+      <div>
+        <div class="base-note">KATA DASAR</div>
+        <div class="baseword" id="baseWord">bersih</div>
+      </div>
+      <div class="board" aria-label="Papan binaan perkataan">
+        <div class="boardtile empty" id="prefixTile">?</div><div class="boardtile center" id="centerTile">BERSIH</div><div class="boardtile empty" id="suffixTile">?</div>
+      </div>
+      <div class="fullword" id="fullWord" aria-live="polite">&nbsp;</div>
+      <div class="sentencebox">
+        <div class="sentence-head">PETUNJUK AYAT</div>
+        <p class="sentence" id="sentence"></p>
+      </div>
+    </main>
+    <div class="chooser">
+      <div class="choice-head"><span>PILIH BLOK IMBUHAN</span><span id="categoryMini" style="color:#7bdccc">AWALAN</span></div>
+      <div class="optiongrid" id="options"></div>
+      <div class="feedback" id="feedback" aria-live="polite">Pilih satu jawapan untuk meneruskan.</div>
+    </div>
+    <footer class="game-foot"><div class="scores"><div class="stat"><small>MARKAH</small><strong id="score">0</strong></div><div class="stat"><small>KOMBO</small><strong id="combo">×0</strong></div></div><button class="solid next" id="nextBtn" disabled>SETERUSNYA →</button></footer>
+  </section>
+  <section id="finish" class="screen hidden" aria-label="Keputusan akhir">
+    <header class="brand"><div class="brandmark"><div class="brandlogo">R</div> RODA IMBUHAN</div><span class="chip">SELESAI</span></header>
+    <main class="finishmain">
+      <div class="trophy" aria-hidden="true">★</div>
+      <div><div class="topline">KEPUTUSAN PERMAINAN</div><h2>Tahniah, <span id="finishName"></span>!</h2></div>
+      <div class="scorebig"><span id="finishScore">0</span><small> / 100</small></div>
+      <p class="subtitle">Kamu telah menamatkan kesemua 20 cabaran imbuhan awalan, akhiran dan apitan.</p>
+      <div class="summaryrow"><div class="summarybox"><strong id="finishCorrect">0 / 20</strong><span>Betul cubaan pertama</span></div><div class="summarybox"><strong id="finishTime">0 min</strong><span>Masa menjawab</span></div></div>
+      <div class="finishbuttons">
+        <button class="solid" id="submitBtn">HANTAR MARKAH KE CIKGU →</button>
+        <p id="sendMessage" class="sendmessage" role="status" aria-live="polite"></p>
+        <button class="secondary" id="copyBtn">SALIN KEPUTUSAN</button>
+      </div>
+    </main>
+    <p class="mutedfoot">Maklumat murid digunakan untuk merekod keputusan permainan sahaja.</p>
+  </section>
+</div>
+<iframe name="resultFrame" id="resultFrame" title="Pengesahan markah" hidden></iframe>
+<script>
+'use strict';
+// LANGKAH 1: Selepas deploy Code.gs, ganti teks di bawah dengan URL /exec milik cikgu.
+const WEB_APP_URL = 'PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
+const KELAS = '5 Battuta';
+const ITEMS = [
+  {jenis:'Awalan', dasar:'baca', ayat:'Setiap petang, Aina _____ buku di perpustakaan.', pilihan:['mem-','ber-','di-','pem-'], betul:'mem-', depan:'mem', belakang:'', hasil:'membaca', tip:'Ayat menerangkan perbuatan Aina yang sedang membaca.'},
+  {jenis:'Awalan', dasar:'lari', ayat:'Pasukan rumah sukan _____ mengelilingi padang.', pilihan:['ter-','ber-','pe-','di-'], betul:'ber-', depan:'ber', belakang:'', hasil:'berlari', tip:'Perkataan ini menunjukkan seseorang melakukan aktiviti lari.'},
+  {jenis:'Awalan', dasar:'tulis', ayat:'Surat itu _____ oleh kakak semalam.', pilihan:['men-','pen-','di-','ter-'], betul:'di-', depan:'di', belakang:'', hasil:'ditulis', tip:'Frasa “oleh kakak” menandakan bentuk pasif.'},
+  {jenis:'Awalan', dasar:'dengar', ayat:'Murid-murid _____ penerangan guru dengan teliti.', pilihan:['pen-','ter-','men-','di-'], betul:'men-', depan:'men', belakang:'', hasil:'mendengar', tip:'Ayat aktif ini menunjukkan perbuatan mendengar.'},
+  {jenis:'Awalan', dasar:'lukis', ayat:'Adik sedang _____ pemandangan di dalam buku sketsa.', pilihan:['ter-','di-','pe-','me-'], betul:'me-', depan:'me', belakang:'', hasil:'melukis', tip:'Pilih imbuhan untuk perbuatan yang sedang dilakukan.'},
+  {jenis:'Awalan', dasar:'jaga', ayat:'Pak Abu ialah _____ pintu pagar sekolah.', pilihan:['men-','pen-','ber-','di-'], betul:'pen-', depan:'pen', belakang:'', hasil:'penjaga', tip:'Ayat memerlukan kata nama bagi orang yang bertugas menjaga.'},
+  {jenis:'Awalan', dasar:'jatuh', ayat:'Bekas air itu _____ dari meja akibat tersenggol.', pilihan:['di-','ter-','men-','ber-'], betul:'ter-', depan:'ter', belakang:'', hasil:'terjatuh', tip:'Perbuatan berlaku secara tidak sengaja.'},
+  {jenis:'Akhiran', dasar:'makan', ayat:'Ibu menyediakan _____ yang seimbang untuk keluarga.', pilihan:['-kan','-an','-i','ber-'], betul:'-an', depan:'', belakang:'an', hasil:'makanan', tip:'Ayat memerlukan kata nama untuk sesuatu yang dimakan.'},
+  {jenis:'Akhiran', dasar:'guna', ayat:'Sila _____ kamus apabila tidak memahami perkataan itu.', pilihan:['-an','-i','-kan','ber-'], betul:'-kan', depan:'', belakang:'kan', hasil:'gunakan', tip:'Ayat ini ialah ayat suruhan yang meminta tindakan.'},
+  {jenis:'Akhiran', dasar:'ikut', ayat:'Murid-murid diminta _____ arahan keselamatan.', pilihan:['-kan','-i','-an','ter-'], betul:'-i', depan:'', belakang:'i', hasil:'ikuti', tip:'Pilih imbuhan untuk melaksanakan arahan yang diberi.'},
+  {jenis:'Akhiran', dasar:'hias', ayat:'Kami menghasilkan _____ daripada bahan kitar semula.', pilihan:['-i','-kan','-an','di-'], betul:'-an', depan:'', belakang:'an', hasil:'hiasan', tip:'Ayat memerlukan kata nama bagi benda yang dihasilkan.'},
+  {jenis:'Akhiran', dasar:'letak', ayat:'Sila _____ buku latihan di atas meja.', pilihan:['-i','-an','ber-','-kan'], betul:'-kan', depan:'', belakang:'kan', hasil:'letakkan', tip:'Ayat ini meminta seseorang meletakkan sesuatu.'},
+  {jenis:'Akhiran', dasar:'hadap', ayat:'Kita perlu _____ cabaran dengan berani.', pilihan:['-i','-kan','-an','ter-'], betul:'-i', depan:'', belakang:'i', hasil:'hadapi', tip:'Perkataan yang diperlukan ialah kata kerja yang bermaksud menghadapi.'},
+  {jenis:'Apitan', dasar:'bersih', ayat:'Kita bertanggungjawab menjaga _____ kelas.', pilihan:['mem-…-kan','ke-…-an','pem-…-an','di-…-kan'], betul:'ke-…-an', depan:'ke', belakang:'an', hasil:'kebersihan', tip:'Ayat memerlukan kata nama yang bermaksud keadaan bersih.'},
+  {jenis:'Apitan', dasar:'main', ayat:'Murid-murid menyertai _____ tradisional semasa hari sukan.', pilihan:['per-…-an','mem-…-kan','di-…-kan','ber-…-an'], betul:'per-…-an', depan:'per', belakang:'an', hasil:'permainan', tip:'Ayat memerlukan kata nama bagi aktiviti bermain.'},
+  {jenis:'Apitan', dasar:'selamat', ayat:'Guru sentiasa mengutamakan _____ murid ketika aktiviti luar.', pilihan:['pen-…-an','di-…-kan','ke-…-an','men-…-kan'], betul:'ke-…-an', depan:'ke', belakang:'an', hasil:'keselamatan', tip:'Perkataan ini bermaksud keadaan selamat.'},
+  {jenis:'Apitan', dasar:'hormat', ayat:'Kita hendaklah _____ warga emas.', pilihan:['di-…-i','peng-…-an','meng-…-i','ke-…-an'], betul:'meng-…-i', depan:'meng', belakang:'i', hasil:'menghormati', tip:'Ayat memerlukan kata kerja aktif yang menunjukkan rasa hormat.'},
+  {jenis:'Apitan', dasar:'guna', ayat:'Kakak sedang _____ pengadun untuk membuat kek.', pilihan:['peng-…-an','meng-…-kan','ke-…-an','di-…-kan'], betul:'meng-…-kan', depan:'meng', belakang:'kan', hasil:'menggunakan', tip:'Kakak melakukan perbuatan menggunakan pengadun.'},
+  {jenis:'Apitan', dasar:'kembang', ayat:'Guru menerangkan _____ teknologi kepada murid.', pilihan:['peng-…-an','di-…-kan','per-…-an','meng-…-kan'], betul:'per-…-an', depan:'per', belakang:'an', hasil:'perkembangan', tip:'Yang diterangkan ialah kemajuan atau perkembangan teknologi.'},
+  {jenis:'Apitan', dasar:'ajar', ayat:'Guru itu menggunakan kaedah _____ yang berkesan.', pilihan:['meng-…-kan','di-…-kan','pel-…-an','peng-…-an'], betul:'peng-…-an', depan:'peng', belakang:'an', hasil:'pengajaran', tip:'Kaedah yang digunakan oleh guru ialah kaedah pengajaran.'}
+];
+const $=id=>document.getElementById(id);
+const state={name:'',index:0,score:0,correct:0,combo:0,hadWrong:false,solved:false,startAt:0,submissionId:'',pendingId:'',recorded:false};
+function newId(){return (window.crypto&&crypto.randomUUID)?crypto.randomUUID():`${Date.now()}-${Math.random().toString(36).slice(2)}`}
+function view(name){for (const id of ['intro','game','finish']) $(id).classList.toggle('hidden',id!==name)}
+function renderSentence(item,solved){const target=$('sentence');target.replaceChildren();const parts=item.ayat.split('_____');target.append(document.createTextNode(parts[0]));const blank=document.createElement('span');blank.className='blank'+(solved?' solved':'');blank.textContent=solved?item.hasil:'________';target.append(blank);target.append(document.createTextNode(parts[1]||''))}
+function currentRound(i){return i<7?1:i<13?2:3}
+function draw(){const it=ITEMS[state.index];state.hadWrong=false;state.solved=false;
+  $('questionCount').textContent=`SOALAN ${String(state.index+1).padStart(2,'0')} / 20`;
+  $('topic').textContent=`IMBUHAN ${it.jenis.toUpperCase()}`;$('categoryMini').textContent=it.jenis.toUpperCase();
+  $('roundChip').textContent=`PUSINGAN ${currentRound(state.index)}`;
+  $('progressBar').setAttribute('aria-valuenow',String(state.index));$('progressFill').style.width=`${state.index*5}%`;
+  $('baseWord').textContent=it.dasar.toUpperCase();$('centerTile').textContent=it.dasar.toUpperCase();
+  for (const id of ['prefixTile','suffixTile']){$(id).textContent='?';$(id).className='boardtile empty'}
+  $('fullWord').innerHTML='&nbsp;';renderSentence(it,false);
+  const choices=$('options');choices.replaceChildren();for(const label of it.pilihan){const b=document.createElement('button');b.className='option';b.type='button';b.textContent=label;b.addEventListener('click',()=>choose(b,label));choices.append(b)}
+  $('feedback').textContent='Pilih satu imbuhan yang sesuai dengan ayat.';$('feedback').className='feedback';$('nextBtn').disabled=true;$('nextBtn').textContent=state.index===19?'KEPUTUSAN →':'SETERUSNYA →';
+  $('score').textContent=state.score;$('combo').textContent=`×${state.combo}`;
+}
+function choose(button,label){if(state.solved||button.disabled)return;const it=ITEMS[state.index];
+  if(label!==it.betul){state.hadWrong=true;state.combo=0;$('combo').textContent='×0';button.classList.add('wrong');button.disabled=true;$('feedback').className='feedback bad';$('feedback').textContent=`Belum tepat. Petunjuk: ${it.tip}`;return}
+  state.solved=true;if(!state.hadWrong){state.score+=5;state.correct++;state.combo++;}else state.combo=0;
+  $('score').textContent=state.score;$('combo').textContent=`×${state.combo}`;
+  for(const btn of $('options').children){btn.disabled=true;if(btn===button)btn.classList.add('right')}
+  for(const [id,val] of [['prefixTile',it.depan],['suffixTile',it.belakang]]){const el=$(id);el.className='boardtile flipped';el.textContent=val?((id==='prefixTile'?val+'-':'-'+val)):'—'}
+  $('feedback').className='feedback good';$('feedback').textContent=state.hadWrong?'Tepat! Imbuhan dan ayat telah dilengkapkan.':`Tepat! +5 markah${state.combo>1?' • Kombo ×'+state.combo:''}`;
+  window.setTimeout(()=>{$('fullWord').textContent=it.hasil.toUpperCase();renderSentence(it,true);$('nextBtn').disabled=false},360);
+}
+function start(){const name=$('studentName').value.trim().replace(/\s+/g,' ');if(name.length<2){$('nameError').textContent='Masukkan nama penuh sebelum mula.';return}state.name=name;state.index=0;state.score=0;state.correct=0;state.combo=0;state.startAt=Date.now();state.submissionId=newId();state.recorded=false;view('game');draw()}
+function finish(){view('finish');$('finishName').textContent=state.name.split(' ')[0];$('finishScore').textContent=state.score;$('finishCorrect').textContent=`${state.correct} / 20`;const m=Math.max(1,Math.ceil((Date.now()-state.startAt)/60000));$('finishTime').textContent=`${m} min`;$('sendMessage').textContent=WEB_APP_URL.startsWith('https://script.google.com/macros/s/')?'Klik Hantar Markah untuk merekod keputusan.':'Mod demo: pautan Apps Script belum dipasang. Gunakan Salin Keputusan untuk ujian.';$('submitBtn').disabled=false}
+function resultText(){return `RODA IMBUHAN BM TAHUN 5\nNama: ${state.name}\nKelas: ${KELAS}\nMarkah: ${state.score}/100\nBetul cubaan pertama: ${state.correct}/20\nTarikh: ${new Date().toLocaleString('ms-MY')}`}
+function isTrustedScriptOrigin(origin){try{const host=new URL(origin).hostname;return host==='script.google.com'||host==='script.googleusercontent.com'||host.endsWith('.googleusercontent.com')}catch{return false}}
+window.addEventListener('message',e=>{if(!isTrustedScriptOrigin(e.origin))return;const d=e.data;if(!d||d.type!=='RODA_IMBUHAN_RESULT'||d.requestId!==state.pendingId)return;
+  $('submitBtn').disabled=false;if(d.ok){state.recorded=true;$('sendMessage').textContent=d.duplicate?'Markah sudah direkod sebelum ini.':'✓ Markah berjaya direkodkan dalam Google Sheets.';$('submitBtn').textContent='MARKAH DIREKOD ✓';$('submitBtn').disabled=true}else{$('sendMessage').textContent=`Rekod gagal: ${String(d.message||'Sila semak sambungan.').slice(0,120)}`}
+});
+function submit(){if(state.recorded)return;if(!/^https:\/\/script\.google\.com\/macros\/s\/[^\s]+\/exec$/.test(WEB_APP_URL)){$('sendMessage').textContent='Belum disambung ke Google Sheets. Cikgu perlu pasang URL /exec Apps Script dalam index.html.';return}
+  const id=newId();state.pendingId=id;$('submitBtn').disabled=true;$('sendMessage').textContent='Menghantar keputusan ke Google Sheets…';
+  const f=document.createElement('form');f.method='POST';f.action=WEB_APP_URL;f.target='resultFrame';f.style.display='none';
+  const fields={requestId:id,submissionId:state.submissionId,nama:state.name,kelas:KELAS,markah:String(state.score),betul:String(state.correct),tempohSaat:String(Math.max(1,Math.round((Date.now()-state.startAt)/1000)))};
+  for(const [key,val] of Object.entries(fields)){const el=document.createElement('input');el.name=key;el.value=val;f.append(el)}document.body.append(f);f.submit();f.remove();
+  window.setTimeout(()=>{if(state.pendingId===id&&!state.recorded){$('submitBtn').disabled=false;$('sendMessage').textContent='Belum menerima pengesahan. Semak Google Sheets sebelum cuba hantar semula.'}},14000);
+}
+$('startBtn').addEventListener('click',start);$('studentName').addEventListener('keydown',e=>{if(e.key==='Enter')start()});$('nextBtn').addEventListener('click',()=>{if(!state.solved)return;if(state.index===ITEMS.length-1)finish();else{state.index++;draw()}});
+$('submitBtn').addEventListener('click',submit);$('copyBtn').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(resultText());$('sendMessage').textContent='Keputusan telah disalin. Boleh tampal dalam WhatsApp.'}catch{$('sendMessage').textContent=resultText()}});
+</script>
+</body>
+</html>
